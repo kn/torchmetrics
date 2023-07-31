@@ -21,25 +21,16 @@ from torch import Tensor
 
 from torchmetrics.utilities.imports import _LATEX_AVAILABLE, _MATPLOTLIB_AVAILABLE, _SCIENCEPLOT_AVAILABLE
 
-if _MATPLOTLIB_AVAILABLE:
-    import matplotlib
-    import matplotlib.axes
-    import matplotlib.pyplot as plt
 
-    _PLOT_OUT_TYPE = Tuple[plt.Figure, Union[matplotlib.axes.Axes, np.ndarray]]
-    _AX_TYPE = matplotlib.axes.Axes
+_PLOT_OUT_TYPE = Tuple[object, object]  # type: ignore[misc]
+_AX_TYPE = object
 
-    style_change = plt.style.context
-else:
-    _PLOT_OUT_TYPE = Tuple[object, object]  # type: ignore[misc]
-    _AX_TYPE = object
+from contextlib import contextmanager
 
-    from contextlib import contextmanager
-
-    @contextmanager
-    def style_change(*args: Any, **kwargs: Any) -> Generator:
-        """No-ops decorator if matplotlib is not installed."""
-        yield
+@contextmanager
+def style_change(*args: Any, **kwargs: Any) -> Generator:
+    """No-ops decorator if matplotlib is not installed."""
+    yield
 
 
 if _SCIENCEPLOT_AVAILABLE:
